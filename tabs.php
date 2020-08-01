@@ -21,7 +21,7 @@ $lang_name = !$input->get->lang ? "default" : $input->get->lang;
     </a>
   </li>
 
-  <?php if(count($languages) > 1) :?>
+  <?php if(!empty($languages) && count($languages) > 1) :?>
     <?php foreach($languages as $lang) :?>
       <?php if($lang->name != "default") :?>
         <li class="<?= ($input->get->lang == $lang->name) ? "uk-active" : ""; ?>">
