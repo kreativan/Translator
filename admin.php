@@ -41,6 +41,7 @@ if($this->user->hasPermission('translator')) {
 
   if($this_module->getStringsArray()) {
     foreach($this_module->getStringsArray() as $key => $value) {
+			$key = rtrim($key, '.'); // remove dot at the end
       $field_name = str_replace(" ", "___", $key);
       $f = $this->modules->get("InputfieldText");
       $f->attr('name', $field_name);
