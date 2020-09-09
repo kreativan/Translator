@@ -50,6 +50,10 @@ class Translator extends Process implements WirePageEditor {
       foreach($data as $key => $value) {
         if($key != "submit_save" && $value != "") {
           $key = str_replace("___"," ", $key);
+          $key = str_replace("_-_",".", $key);
+          $key = str_replace("-__",",", $key);
+          $key = str_replace("__-",'"', $key);
+          $key = str_replace("__--","'", $key);
           $array[$key] = $value;
         }
       }
