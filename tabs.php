@@ -44,13 +44,15 @@ $lang_name = !$input->get->lang ? "default" : $input->get->lang;
   </li>
 
   <li>
-    <a href="./?show_empty=1" title="<?= ($this_module->hide_populated == "1") ? "Show all fields" : "Show only empty fields" ?>" uk-tooltip>
+    <a href="./?show_empty=1&lang=<?= $input->get->lang ?>"
+      title="<?= ($this_module->hide_populated == "1") ? "Show all fields" : "Show only empty fields" ?>" uk-tooltip
+    >
       <i class="fas fa-toggle-<?= ($this_module->hide_populated == "1") ? "off" : "on" ?>"></i>
     </a>
   </li>
 
   <li>
-    <a href="./?scan=1" title="Scan for files" uk-tooltip>
+    <a href="./?scan=1&lang=<?= $input->get->lang ?>" title="Scan for files" uk-tooltip>
       <i class="fas fa-sync-alt" onclick="spinIcon()"></i>
     </a>
   </li>
