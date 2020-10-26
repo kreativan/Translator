@@ -116,8 +116,12 @@ class Translator extends Process implements WirePageEditor {
    */
   public function array($lang_name = "default") {
 
-    // get language json by $lang_name
-    $json = file_get_contents($this->lngFolder.$lang_name.".json");
+    // if json translation file doesnt exits return empty array
+    $json_file = $this->lngFolder.$lang_name.".json";
+    if(!file_exists($json_file)) return [];
+
+    // get language json
+    $json = file_get_contents($json_file);
     $array = json_decode($json, true);
 
     $custom_strings_array = $this->getCustomStringArray($lang_name);
