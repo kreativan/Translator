@@ -9,11 +9,20 @@
  *
 */
 
-class Translator extends Process implements WirePageEditor {
+class Translator extends WireData implements Module {
 
-  // for WirePageEditor
-  public function getPage() {
-    return $this->page;
+  public static function getModuleInfo() {
+    return array(
+      'title' => 'Translator',
+      'version' => 100,
+      'summary' => 'Scan front end for language strings and store them in text file',
+      'icon' => 'language',
+      'author' => "Ivan Milincic",
+      "href" => "https://kreativan.dev",
+      'installs' => ['TranslatorUI'],
+      'singular' => true,
+      'autoload' => false,
+    );
   }
 
   public function __construct() {
@@ -40,7 +49,6 @@ class Translator extends Process implements WirePageEditor {
   }
 
   public function init() {
-    parent::init(); // always remember to call the parent init
 
     if($this->translations_folder != "") {
       $this->lngFolder = $this->config->paths->root . $this->translations_folder;
@@ -50,48 +58,6 @@ class Translator extends Process implements WirePageEditor {
     }
 
     if(!is_dir($this->lngFolder)) $this->files->mkdir($this->lngFolder);
-
-    if($this->input->scan) {
-      $this->scan($this->config->paths->templates);
-      $this->message("Scan complete");
-      $this->session->redirect("./?lang={$this->input->get->lang}");
-    }
-
-    if($this->input->get->show_empty) {
-      $new_data = [
-        "hide_populated" => ($this->hide_populated == "1") ? "2" : "1",
-      ];
-      $old_data = $this->modules->getModuleConfigData($this->className());
-      $data = array_merge($old_data, $new_data);
-      $this->modules->saveConfig($this->className(), $data);
-      $this->session->redirect("./?lang={$this->input->get->lang}");
-    }
-
-    if($this->input->post->submit_save || $this->input->post->translator_submit) {
-
-      // Construct array from POST
-      $data = $this->input->post;
-      $array = [];
-      foreach($data as $key => $value) {
-        if($key != "submit_save" && $value != "") {
-          $key = $this->decode($key);
-          $array[$key] = $value;
-        }
-      }
-
-      // remove last item from array: token
-      array_pop($array);
-
-      // Conver to json with JSON_UNESCAPED_UNICODE, to support Cyrillic etc...
-      $json = json_encode($array, JSON_UNESCAPED_UNICODE);
-
-      // Let's save it in a file
-      $file_name = (!$this->input->get->lang) ? "default" : $this->input->get->lang;
-      $this->save("{$this->lngFolder}{$file_name}.json", $json);
-
-      $this->session->redirect("./?lang={$this->input->get->lang}");
-
-    }
 
   }
 
@@ -275,33 +241,6 @@ class Translator extends Process implements WirePageEditor {
       return count($errors) > 0 ? false : true;
     }
 
-  }
-
-  /* ----------------------------------------------------------------
-    Process
-  ------------------------------------------------------------------- */
-
-  /**
-   *  Execute
-   *  Module Page
-   *  @method includeAdminFile()
-   *
-   */
-  public function ___execute() {
-
-    // set a new headline, replacing the one used by our page
-    // this is optional as PW will auto-generate a headline
-    $this->headline('Translator');
-
-    // add a breadcrumb that returns to our main page
-    // this is optional as PW will auto-generate breadcrumbs
-    $this->breadcrumb('./', 'Translator');
-
-    // include admin file
-    return [
-      "this_module" => $this,
-      "page_name" => "main"
-    ];
   }
 
 }

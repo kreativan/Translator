@@ -11,12 +11,14 @@
  *
 */
 
+$translator = wire("modules")->get('Translator');
+
 if($this->user->hasPermission('translator')) {
 
   include("_tabs.php");
 
   $lang = (!$this->input->get->lang) ? "default" : $this->input->get->lang;
-  $json = "{$this_module->lngFolder}{$lang}.json";
+  $json = "{$translator->lngFolder}{$lang}.json";
   $json = file_get_contents($json);
   $json = json_decode($json);
 
@@ -33,12 +35,12 @@ if($this->user->hasPermission('translator')) {
   $f->rows = "10";
   $f->description = "Here you can add custom translations. For strings that are not picked up automatically (usually come from modules)...";
   $f->notes = "One per line in fomat: `Example=Example Translation`";
-  if($this_module->getStringsArray()) $f->collapsed = "2";
+  if($translator->getStringsArray()) $f->collapsed = "2";
   $form->append($f);
 
-  if($this_module->getStringsArray()) {
-    foreach($this_module->getStringsArray() as $key => $value) {
-      $field_name = $this_module->encode($key);
+  if($translator->getStringsArray()) {
+    foreach($translator->getStringsArray() as $key => $value) {
+      $field_name = $translator->encode($key);
       $field_type = strlen($key) > 60 ? "InputfieldTextarea" : "InputfieldText";
       $f = $this->modules->get("$field_type");
       $f->attr('name', $field_name);

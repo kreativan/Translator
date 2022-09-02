@@ -58,7 +58,7 @@ $lang_name = !$input->get->lang ? "default" : $input->get->lang;
 
   <?php if($user->isSuperuser()):?>
     <li>
-      <a href="<?= $modules->getModuleEditUrl($this_module); ?>" title="Module Settings">
+      <a href="<?= $modules->getModuleEditUrl('Translator'); ?>" title="Module Settings">
         <i class="fa fa-cog"></i>
       </a>
     </li>
