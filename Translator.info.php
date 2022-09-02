@@ -40,7 +40,7 @@ $info = array(
 	// page that you want created to execute this module
 	'page' => array(
 		'name' => 'translator',
-		'parent' => 'system',
+		'parent' => 'wirekit',
 		'title' => 'Translator',
     ),
 
@@ -48,7 +48,7 @@ $info = array(
     'autoload' => false, // need for Redirect
 
 	// dependency
-	'requires' => ["ProcessWire>=3.0.153", "KreativanHelper"],
+	'requires' => ["ProcessWire>=3.0.153"],
 
 	// for more options that you may specify here, see the file: /wire/core/Process.php
 	// and the file: /wire/core/Module.php

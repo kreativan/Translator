@@ -17,9 +17,9 @@ class Translator extends Process implements WirePageEditor {
   }
 
   public function __construct() {
-    $this->textFile = $this->config->paths->siteModules . $this->className() . "/files.text";
+    $this->textFile = $this->config->paths->templates . "translator/files.text";
     $this->folder = $this->config->paths->siteModules . $this->className() . "/";
-    $this->lngFolder = $this->config->paths->siteModules . $this->className() . "/lng/";
+    $this->lngFolder = $this->config->paths->templates . "translator/";
     $this->exclude = ["errors", "less", "lib"];
     $this->encode_arr = [
       "." => "|_d_|",
@@ -42,6 +42,15 @@ class Translator extends Process implements WirePageEditor {
   public function init() {
     parent::init(); // always remember to call the parent init
 
+    if($this->translations_folder != "") {
+      $this->lngFolder = $this->config->paths->root . $this->translations_folder;
+      $this->lngFolder = str_replace("//", "/",  $this->lngFolder);
+      $this->textFile = $this->config->paths->root . $this->translations_folder . "files.text";
+      $this->textFile = str_replace("//", "/",  $this->textFile);
+    }
+
+    if(!is_dir($this->lngFolder)) $this->files->mkdir($this->lngFolder);
+
     if($this->input->scan) {
       $this->scan($this->config->paths->templates);
       $this->message("Scan complete");
@@ -58,7 +67,7 @@ class Translator extends Process implements WirePageEditor {
       $this->session->redirect("./?lang={$this->input->get->lang}");
     }
 
-    if($this->input->post->submit_save) {
+    if($this->input->post->submit_save || $this->input->post->translator_submit) {
 
       // Construct array from POST
       $data = $this->input->post;
@@ -289,18 +298,10 @@ class Translator extends Process implements WirePageEditor {
     $this->breadcrumb('./', 'Translator');
 
     // include admin file
-    return $this->modules->get("KreativanHelper")->includeAdminFile($this, "admin.php", "main");
-
+    return [
+      "this_module" => $this,
+      "page_name" => "main"
+    ];
   }
-
-  /**
-   *  This is custom page edit for this module
-   *  Edit URL @example admin/MODULE_URL/edit/id?=PAGE_ID
-   *
-   */
-  public function executeEdit() {
-    return $this->modules->get("KreativanHelper")->adminPageEdit();
-  }
-
 
 }

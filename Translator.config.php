@@ -26,76 +26,15 @@ class TranslatorConfig extends ModuleConfig {
 
 		$inputfields->add($options);
 
-    /* ----------------------------------------------------------------
-    	Multi-language
-    ------------------------------------------------------------------- */
-		$multi_lang = $this->wire('modules')->get("InputfieldFieldset");
-		$multi_lang->label = __("Multi-Language");
-		$multi_lang->icon = "fa-language";
-		$wrapper->add($multi_lang);
-
-		//
-		//	Setup Multilanguage
-		//
-
-		// include install file
-		include("./install-multi-lang.php");
-
-		$html = "
-			<h3 class='uk-margin-remove' style='line-height:1;font-size:17px;'>
-				Multi-language Setup
-			</h3>
-			<p> 1 click multi-language setup. This will install required modules, setup fields and rest of the multi-lang
-			features...</p>
-		";
-
-		if($this->modules->get("Translator")->isMultiLang()) {
-			$html .= "
-				<a href='./edit?name=Translator&collapse_info=1&uninstall_multi_lang=1'
-					class='uk-button uk-button-danger'
-					onclick=\"modalConfirm('Uninstall Multi-Language?', 'This will uninstall and remove all multi-language related features...')\"
-				>
-				 <i class='fa fa-ban'></i>
-					Uninstall
-				</a>
-			 ";
-		} else {
-			$html .= "
-				<a href='./edit?name=Translator&collapse_info=1&install_multi_lang=1'
-						class='uk-button uk-button-primary'
-						onclick=\"modalConfirm('Setup Multi-Language?', 'This will install all required modules and setup related fields to multi-language...')\"
-					>
-						<i class='fa fa-cog'></i>
-						Setup
-				</a>
-			";
-		}
-
-		$f = $this->wire('modules')->get("InputfieldMarkup");
-		$f->value = $html;
-		$multi_lang->add($f);
-
-		//
-		//	Fields to exclude from multi lang
-		//
-
-		$fields_array = [];
-		$get_fields = $this->fields->find("type=FieldtypeText|FieldtypeTextLanguage|FieldtypeTextarea|FieldtypeTextareaLanguage");
-		foreach($get_fields as $f) {
-			$fields_array[$f->name] = !empty($f->label) ? $f->label : $f->name;
-		}
-
-		// exclude multi lang fields
-		$f = $this->wire('modules')->get("InputfieldAsmSelect");
-		$f->attr('name', 'exc_multilang_fields');
-		$f->label = 'Exclude fields';
-		$f->options = $fields_array;
+    // folder
+		$f = $this->wire('modules')->get("InputfieldText");
+		$f->attr('name', 'translations_folder');
+		$f->label = 'Translator Folder';
+		$f->required = false;
+		$f->placeholder = "/site/templates/translator/";
+		$f->optionColumns = 1;
 		$f->columnWidth = "100%";
-		$f->description = "Select fields that should not support multi-language...";
-		$f->collapsed = $this->modules->get("Translator")->isMultiLang() ? "4" : "";
-		$multi_lang->add($f);
-
-    $inputfields->add($multi_lang);
+		$options->add($f);
 
 		/* ----------------------------------------------------------------
 			Info
@@ -103,7 +42,7 @@ class TranslatorConfig extends ModuleConfig {
 		$info = $this->wire('modules')->get("InputfieldFieldset");
 		$info->label = __("Info");
 		$info->icon = "fa-info";
-		$wrapper->add($multi_lang);
+		$wrapper->add($info);
 
 		$f = $this->wire('modules')->get("InputfieldMarkup");
 		$f->value = "
