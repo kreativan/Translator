@@ -18,7 +18,7 @@ class TranslatorUI extends Process implements WirePageEditor {
 
   public function __construct() {
     $this->translator = wire("modules")->get("Translator");
-    $this->lngFolder = $this->config->paths->templates . "translator/";
+    $this->lngFolder = $this->config->paths->assets . "translator/";
   }
 
   public function init() {
