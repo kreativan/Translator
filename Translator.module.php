@@ -26,9 +26,9 @@ class Translator extends WireData implements Module {
   }
 
   public function __construct() {
-    $this->textFile = $this->config->paths->templates . "translator/files.text";
+    $this->textFile = $this->config->paths->assets . "translator/files.text";
     $this->folder = $this->config->paths->siteModules . $this->className() . "/";
-    $this->lngFolder = $this->config->paths->templates . "translator/";
+    $this->lngFolder = $this->config->paths->assets . "translator/";
     $this->exclude = ["errors", "less", "lib"];
     $this->encode_arr = [
       "." => "|_d_|",
