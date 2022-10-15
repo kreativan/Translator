@@ -31,7 +31,7 @@ class TranslatorConfig extends ModuleConfig {
 		$f->attr('name', 'translations_folder');
 		$f->label = 'Translator Folder';
 		$f->required = false;
-		$f->placeholder = "/site/templates/translator/";
+		$f->placeholder = "/site/assets/translator/";
 		$f->optionColumns = 1;
 		$f->columnWidth = "100%";
 		$options->add($f);
